@@ -1,0 +1,7 @@
+program = program-heading block "." .
+
+program-heading = `program` identifier `(`  identifier-list `)` `;` .
+
+block = declaration-part statement-part .
+
+statement-part = `begin` statement-sequence `end` .

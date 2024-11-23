@@ -1,0 +1,38 @@
+{
+    "version": 8,
+    "configurePresets": [
+        {
+            "name": "config-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "displayName": "base configuration",
+            "description": "Default build using Ninja"
+        },
+        {
+            "name": "default-configure",
+            "displayName": "Default Configure Preset",
+            "description": "Default Configure Preset",
+            "inherits": "config-base",
+            "binaryDir": "/tmp/pacc-tmp-build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "default-build",
+            "description": "Default Build Preset",
+            "displayName": "Default Build Preset",
+            "configurePreset": "default-configure"
+        }
+    ],
+    "testPresets": [
+        {
+            "name": "default-test",
+            "description": "Default Test Preset" ,
+            "displayName": "Default Test Preset",
+            "configurePreset": "default-configure"
+        }
+    ]
+}
