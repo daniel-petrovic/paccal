@@ -50,14 +50,14 @@
             match("program");
             identifier();
             match(";");
-            semaPrint('int main() ')
+            sema_print('int main() ')
         }
 
         block() {
             match("begin");
-            semaPrint("{");
+            sema_print("{");
             match("end");
-            semaPrint('}');
+            sema_print('}');
         }
 
     }

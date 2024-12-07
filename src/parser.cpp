@@ -26,6 +26,7 @@ namespace pacc
     }
     void Parser::block()
     {
+        m_env = std::make_shared<Env>(m_env);
         match(Tag::KEY_BEGIN);
         semaPrint("{");
         match(Tag::KEY_END);
@@ -33,17 +34,53 @@ namespace pacc
     }
     void Parser::identifier()
     {
-        // temporarily we handle identifier as a terminal
-        match(Tag::IDENTIFIER);
+        auto tokIdentifier = m_lex.nextTok();
+        if (tokIdentifier.tag != Tag::IDENTIFIER) {
+            throw "Error: Expected identifier";
+        }
+        semaPrint(tokIdentifier.str());
     }
 
     void Parser::match(Tag tag)
     {
-        if (m_lex.scan().tag != tag)
+        if (m_lex.nextTok().tag != tag)
         {
             throw "Invalid Syntax";
         }
     }
+
+        void Parser::variableDeclarationPart() {
+            match(Tag::KEY_VAR);
+            variableDeclaration();
+            match(Tag::SYM_SEMICOL);
+        }
+
+        void Parser::variableDeclaration() {
+            identifierList();
+            match(Tag::SYM_DOUBLECOL);
+            type();
+        }
+
+        void Parser::identifierList() {
+            identifier();
+            if (m_lex.peekTok().tag == Tag::SYM_COMMA) {
+                match(Tag::SYM_COMMA);
+                semaPrint(",");
+                identifierList();
+            }
+        }
+
+        void Parser::type() {
+            typeIdentifier();
+        }
+
+        void Parser::typeIdentifier() {
+            Token tokType = m_lex.nextTok();
+
+            if (tokType.tag != Tag::IDENTIFIER) {
+                throw "Error: Type identifier expected";
+            }
+        }
 
     void Parser::semaPrint(std::string_view s)
     {
